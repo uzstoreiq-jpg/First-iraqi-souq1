@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <script>
+      // Early suppression of ResizeObserver and cross-origin "Script error."
+      (function() {
+        var handler = function(e) {
+          var msg = String(e.message || '').toLowerCase();
+          var errStr = e.error ? String(e.error).toLowerCase() : '';
+          var src = String(e.filename || '').toLowerCase();
+          if (
+            msg.indexOf('script error') > -1 ||
+            msg.indexOf('resizeobserver') > -1 ||
+            msg.indexOf('facebook') > -1 ||
+            msg.indexOf('fbevents') > -1 ||
+            errStr.indexOf('script error') > -1 ||
+            errStr.indexOf('resizeobserver') > -1 ||
+            src.indexOf('facebook') > -1 ||
+            src.indexOf('fbevents') > -1 ||
+            e.lineno === 0 ||
+            e.colno === 0
+          ) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          }
+        };
+        window.addEventListener('error', handler, true);
+        window.addEventListener('unhandledrejection', function(e) {
+          var reason = e.reason ? String(e.reason).toLowerCase() : '';
+          if (
+            reason.indexOf('script error') > -1 ||
+            reason.indexOf('facebook') > -1 ||
+            reason.indexOf('fbevents') > -1 ||
+            reason.indexOf('resizeobserver') > -1
+          ) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+          }
+        });
+        var origOnError = window.onerror;
+        window.onerror = function(message, source, lineno, colno, error) {
+          var msg = String(message || '').toLowerCase();
+          var src = String(source || '').toLowerCase();
+          var errStr = error ? String(error).toLowerCase() : '';
+          if (
+            msg.indexOf('script error') > -1 ||
+            msg.indexOf('resizeobserver') > -1 ||
+            msg.indexOf('facebook') > -1 ||
+            msg.indexOf('fbevents') > -1 ||
+            src.indexOf('facebook') > -1 ||
+            src.indexOf('fbevents') > -1 ||
+            errStr.indexOf('script error') > -1 ||
+            lineno === 0 ||
+            colno === 0
+          ) {
+            return true;
+          }
+          if (origOnError) {
+            return origOnError.apply(this, arguments);
+          }
+        };
+        var origConsoleError = console.error;
+        console.error = function() {
+          if (arguments[0] && typeof arguments[0] === 'string') {
+            var lowerArg = arguments[0].toLowerCase();
+            if (
+              lowerArg.indexOf('resizeobserver') > -1 ||
+              lowerArg.indexOf('script error') > -1 ||
+              lowerArg.indexOf('facebook') > -1 ||
+              lowerArg.indexOf('fbevents') > -1
+            ) {
+              return;
+            }
+          }
+          origConsoleError.apply(console, arguments);
+        };
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://mojod.app" crossorigin />
+    <link rel="dns-prefetch" href="https://mojod.app" />
+    <link rel="preconnect" href="https://rolemall.com" crossorigin />
+    <link rel="dns-prefetch" href="https://rolemall.com" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23F97316'/%3E%3Ctext x='50' y='68' font-family='sans-serif' font-size='55' font-weight='bold' fill='white' text-anchor='middle'%3E%D8%B3%3C/text%3E%3C/svg%3E" />
+    <title>سوق العراق الأول</title>
+  </head>
+  <body class="bg-white text-[#111827]">
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1637866544068395&ev=PageView&noscript=1" /></noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

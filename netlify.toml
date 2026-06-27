@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  included_files = ["categories_static_fallback.json", "products_static_fallback.json"]
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_TOKEN,META_ACCESS_TOKEN,META_PIXEL_ID,VITE_API_BASE_URL"
