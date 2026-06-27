@@ -75,7 +75,7 @@ export const initMetaPixel = () => {
 
 const sendServerEvent = async (eventName: string, data: any, eventId: string, userData: any = {}) => {
   try {
-    await fetch('/api/track', {
+    await fetch('/.netlify/functions/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
